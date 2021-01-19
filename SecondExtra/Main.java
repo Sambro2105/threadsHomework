@@ -1,6 +1,9 @@
 package SecondExtra;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Scanner;
+import java.util.Set;
 
 public class Main {
     public static void main(String[] args) {
@@ -12,8 +15,7 @@ public class Main {
         // Transforming user input to array of Integers
         ArrayList<Integer> data = new ArrayList<>();
         String[] strings = line.split(" ");
-        for (String string :
-                strings) {
+        for (String string : strings) {
             data.add(Integer.valueOf(string));
         }
 
@@ -29,14 +31,13 @@ public class Main {
     static public int getCoolInteger(Set<Integer> data) {
         // By default the answer is -1
         int result = -1;
-        int max = data
-                .stream()
-                .mapToInt(v -> v)
-                .max().orElseThrow(NoSuchElementException::new);
-        int min = data
-                .stream()
-                .mapToInt(v -> v)
-                .min().orElseThrow(NoSuchElementException::new);
+
+        // Let's find min, max and delta between them
+        int[] sorted = data.stream()
+                .mapToInt(Integer::intValue)
+                .toArray();
+        int min = sorted[0];
+        int max = sorted[sorted.length - 1];
         int delta = max - min;
 
         // If the difference between min and max is 0 or 1, then is answer is that difference
