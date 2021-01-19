@@ -1,9 +1,11 @@
 package FirstExtra;
 
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Scanner;
+import java.util.concurrent.atomic.AtomicInteger;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -27,19 +29,28 @@ public class Main {
     }
 
     /**
-    Return the earliest winner of the game
-    */
+     * Return the earliest winner of the game
+     */
     static public String getWinner(ArrayList<String> data) {
         Map<String, Integer> results = new HashMap<>();
+        String[] currentWinner = new String[1];
+        final AtomicInteger currentWinnerScore = new AtomicInteger(0);
+
         data.forEach(result -> {
-            String[] a = result.split(" ");
-            String name = a[0];
-            Integer score = Integer.valueOf(a[1]);
+            String[] nameScore = result.split(" ");
+            String name = nameScore[0];
+            int score = Integer.parseInt(nameScore[1]);
+
             results.putIfAbsent(name, 0);
-            results.put(name, results.get(name) + score);
+            int newScore = results.get(name) + score;
+            results.put(name, newScore);
+
+            if (newScore > currentWinnerScore.get()) {
+                currentWinner[0] = name;
+                currentWinnerScore.set(newScore);
+            }
         });
 
-        return results.entrySet().stream()
-                .max((entry1, entry2) -> entry1.getValue() > entry2.getValue() ? 1 : -1).get().getKey();
+        return currentWinner[0];
     }
 }
